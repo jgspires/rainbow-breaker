@@ -1,0 +1,10 @@
+.main {
+    width: 1000px;
+    height: 600px;
+    margin: auto;
+    border: 3px solid rgb(3, 56, 214)
+}
+
+.gameCanvas {
+    background-color: black;
+}
