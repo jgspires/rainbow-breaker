@@ -45,6 +45,7 @@
                 "ignoreStrings": true
             }
         ],
+        "ignorePatterns": ["index.html"],
         "no-use-before-define": "off",
         "no-empty-function": [
             "error",

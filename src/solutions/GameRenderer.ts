@@ -29,7 +29,6 @@ export class GameRenderer implements IGameRenderer {
       this.clearCanvas()
 
       gameTime.then = gameTime.now - (elapsedTime % this.fpsInterval)
-      console.log(elapsedTime % this.fpsInterval)
       this.frameCounter++
     }
 

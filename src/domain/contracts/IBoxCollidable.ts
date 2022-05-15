@@ -1,8 +1,11 @@
 import { Dimensions, Position } from '../entities/components'
 
-export interface IEntity {
+export type HitBox = {
   position: Position
   dimensions: Dimensions
-  draw(context: CanvasRenderingContext2D): void
-  update(): void
+}
+
+export interface IBoxCollidable {
+  hitbox: HitBox
+  collide(): void
 }

@@ -1,5 +1,11 @@
-import { AbstractBlock } from '../../contracts/blocks'
+import { AbstractBlock, BlockProps } from '../../contracts/blocks'
+import { Dimensions, Position } from '../components'
 
 export class BasicBlock extends AbstractBlock {
-  colour = '#26AEFF'
+  constructor(position: Position) {
+    const blockProps = {
+      colour: '#26AEFF'
+    }
+    super(blockProps, position)
+  }
 }
