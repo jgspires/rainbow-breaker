@@ -1,6 +1,6 @@
 import { Dimensions, Hitbox, Position } from '../../entities/components'
 import { SpriteSheetData } from '../../entities/engine'
-import { SpriteOperations } from '../../entities/utils'
+import { SpriteHelper } from '../../entities/utils'
 import { BlockPropChanges, BlockProps, IBlock } from './IBlock'
 
 const defaultBlock = {
@@ -53,10 +53,7 @@ export abstract class AbstractBlock implements IBlock {
   draw(context: CanvasRenderingContext2D): void {
     // Maybe attempt to add colour overlay to block (would be nice to have)
     const spriteIndex = this.getBlockSpriteIndex()
-    const spriteStartPos = new SpriteOperations().getSpriteStartPos(
-      spriteIndex,
-      this.spriteSheetData
-    )
+    const spriteStartPos = new SpriteHelper().getSpriteStartPos(spriteIndex, this.spriteSheetData)
     context.drawImage(
       this.spriteSheetData.spriteSheetImage,
       spriteStartPos.x,

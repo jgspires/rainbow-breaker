@@ -1,7 +1,8 @@
+import { AnimationProps } from '../../contracts'
 import { Position } from '../components'
 import { SpriteSheetData } from '../engine'
 
-export class SpriteOperations {
+export class SpriteHelper {
   getSpriteStartPos(spriteIndex: number, spriteData: SpriteSheetData): Position {
     let currentRow = 1
     const startPos: Position = {
@@ -16,5 +17,16 @@ export class SpriteOperations {
     }
     startPos.x += (spriteData.spriteSize.width + spriteData.spritePadding.width) * spriteIndex
     return startPos
+  }
+
+  static getAnimationCycleState(animationProps: AnimationProps, stateQty: number): number {
+    const baseFrameInterval = animationProps.maxFrame / stateQty
+    let frameInterval = baseFrameInterval
+    let animationState = 1
+    while (animationProps.currentFrame >= frameInterval) {
+      frameInterval += baseFrameInterval
+      animationState++
+    }
+    return animationState
   }
 }

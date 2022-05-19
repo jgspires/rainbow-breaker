@@ -1,1 +1,1 @@
-export * from './SpriteOperations'
+export * from './SpriteHelper'

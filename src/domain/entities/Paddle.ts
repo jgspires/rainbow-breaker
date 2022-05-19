@@ -1,7 +1,7 @@
 import { AnimationProps, IPaddle, PaddleProps } from '../contracts'
 import { Position, Dimensions, Hitbox } from './components'
 import { SpriteSheetData } from './engine'
-import { SpriteOperations } from './utils'
+import { SpriteHelper } from './utils'
 
 export class Paddle implements IPaddle {
   position: Position
@@ -9,7 +9,7 @@ export class Paddle implements IPaddle {
   hitbox: Hitbox
   animationProps: AnimationProps = {
     currentFrame: 0,
-    maxFrame: 240
+    maxFrame: 360
   }
   paddleProps: PaddleProps = {
     acceleration: 1.0,
@@ -17,17 +17,17 @@ export class Paddle implements IPaddle {
   }
   spriteSheetData: SpriteSheetData = {
     spriteSheetImage: document.getElementById('paddle-sprite-sheet')! as HTMLImageElement,
-    spritePadding: { width: 12, height: 0 },
-    spriteSize: { width: 115, height: 35 },
+    spritePadding: { width: 11, height: 0 },
+    spriteSize: { width: 117, height: 35 },
     spriteSheetSize: {
       columns: 4,
       rows: 1
     }
   }
 
-  constructor(position: Position, dimensions: Dimensions) {
+  constructor(position: Position) {
     this.position = position
-    this.dimensions = dimensions
+    this.dimensions = { width: 115, height: 35 }
     this.hitbox = new Hitbox(this.position, this.dimensions)
   }
 
@@ -45,10 +45,7 @@ export class Paddle implements IPaddle {
 
   draw(context: CanvasRenderingContext2D): void {
     const spriteIndex = this.getPaddleSprite()
-    const spriteStartPos = new SpriteOperations().getSpriteStartPos(
-      spriteIndex,
-      this.spriteSheetData
-    )
+    const spriteStartPos = new SpriteHelper().getSpriteStartPos(spriteIndex, this.spriteSheetData)
     context.drawImage(
       this.spriteSheetData.spriteSheetImage,
       spriteStartPos.x,
@@ -63,10 +60,10 @@ export class Paddle implements IPaddle {
   }
 
   getPaddleSprite(): number {
-    const currentFrame = this.animationProps.currentFrame
-    if (currentFrame < 60) return 0
-    else if (currentFrame < 120) return 1
-    else if (currentFrame < 180) return 2
+    const animationState = SpriteHelper.getAnimationCycleState(this.animationProps, 6)
+    if (animationState === 1 || animationState === 7) return 0
+    else if (animationState === 2 || animationState === 6) return 1
+    else if (animationState === 3 || animationState === 5) return 2
     else return 3
   }
 }
