@@ -1,16 +1,15 @@
-import { Dimensions, Position } from '../../entities/components'
+import { Dimensions, Hitbox, Position } from '../../entities/components'
 import { SpriteSheetData } from '../../entities/engine'
 import { SpriteOperations } from '../../entities/utils'
-import { HitBox } from '../IBoxCollidable'
 import { BlockPropChanges, BlockProps, IBlock } from './IBlock'
 
-export abstract class AbstractBlock implements IBlock {
-  static DEFAULT_DIMENSIONS: Dimensions = {
+const defaultBlock = {
+  dimensions: {
     width: 80,
     height: 40
-  }
-  static DEFAULT_HEALTH: number = 1
-  static DEFAULT_SPRITE_SHEET: SpriteSheetData = {
+  },
+  health: 1,
+  spriteSheet: {
     spriteSheetImage: document.getElementById('block-sprite-sheet')! as HTMLImageElement,
     spritePadding: { width: 18, height: 10 },
     spriteSize: { width: 110, height: 54 },
@@ -18,32 +17,30 @@ export abstract class AbstractBlock implements IBlock {
       columns: 4,
       rows: 1
     }
-  }
-  static DEFAULT_COLOUR: string = '#FFFFFF'
+  },
+  colour: '#FFFFFF'
+}
 
+export abstract class AbstractBlock implements IBlock {
   blockProps: BlockProps = {
-    colour: AbstractBlock.DEFAULT_COLOUR,
-    maxHealth: AbstractBlock.DEFAULT_HEALTH,
-    currentHealth: AbstractBlock.DEFAULT_HEALTH,
-    spriteSheetData: AbstractBlock.DEFAULT_SPRITE_SHEET
+    colour: defaultBlock.colour,
+    maxHealth: defaultBlock.health,
+    currentHealth: defaultBlock.health
   }
-  dimensions: Dimensions = AbstractBlock.DEFAULT_DIMENSIONS
+  dimensions: Dimensions = defaultBlock.dimensions
   position: Position
-  hitbox: HitBox
+  spriteSheetData: SpriteSheetData = defaultBlock.spriteSheet
+  hitbox: Hitbox
 
   constructor(blockProps: BlockPropChanges, position: Position, dimensions?: Dimensions) {
     this.blockProps = {
       colour: blockProps.colour || this.blockProps.colour,
       maxHealth: blockProps.maxHealth || this.blockProps.maxHealth,
-      currentHealth: blockProps.maxHealth || this.blockProps.maxHealth,
-      spriteSheetData: blockProps.spriteSheetData || this.blockProps.spriteSheetData
+      currentHealth: blockProps.maxHealth || this.blockProps.maxHealth
     }
     this.position = position
     this.dimensions = dimensions || this.dimensions
-    this.hitbox = {
-      dimensions: this.dimensions,
-      position: this.position
-    }
+    this.hitbox = new Hitbox(this.position, this.dimensions)
   }
   collide(): void {
     // TO DO
@@ -54,29 +51,23 @@ export abstract class AbstractBlock implements IBlock {
   }
 
   draw(context: CanvasRenderingContext2D): void {
-    context.fillStyle = this.blockProps.colour
+    // Maybe attempt to add colour overlay to block (would be nice to have)
     const spriteIndex = this.getBlockSpriteIndex()
     const spriteStartPos = new SpriteOperations().getSpriteStartPos(
       spriteIndex,
-      this.blockProps.spriteSheetData
+      this.spriteSheetData
     )
     context.drawImage(
-      this.blockProps.spriteSheetData.spriteSheetImage,
+      this.spriteSheetData.spriteSheetImage,
       spriteStartPos.x,
       spriteStartPos.y,
-      this.blockProps.spriteSheetData.spriteSize.width,
-      this.blockProps.spriteSheetData.spriteSize.height,
+      this.spriteSheetData.spriteSize.width,
+      this.spriteSheetData.spriteSize.height,
       this.position.x,
       this.position.y,
       this.dimensions.width,
       this.dimensions.height
     )
-    // context.fillRect(
-    //   this.position.x,
-    //   this.position.y,
-    //   this.dimensions.width,
-    //   this.dimensions.height
-    // )
   }
 
   getBlockSpriteIndex(): number {
