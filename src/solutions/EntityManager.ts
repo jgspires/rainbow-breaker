@@ -24,6 +24,12 @@ export class EntityManager implements IEntityManager {
     }
   }
 
+  updateEntities(): void {
+    for (const subscriber of this.subscribers) {
+      subscriber.entity.update()
+    }
+  }
+
   generateUniqueId(): number {
     const existingIds = this.subscribers.map(entity => entity._id)
     let newId = 0

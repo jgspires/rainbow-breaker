@@ -9,4 +9,6 @@ export interface IEntityManager {
   removeEntity(entity: IEntity): void
 
   drawEntities(context: CanvasRenderingContext2D): void
+
+  updateEntities(): void
 }
