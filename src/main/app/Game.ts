@@ -1,14 +1,15 @@
-import { RenderEntitiesUseCase } from '../../data/useCases/RenderEntitiesUseCase'
-import { IGame } from '../../domain/contracts'
-import { BasicBlock } from '../../domain/entities/blocks/BasicBlock'
+import { IEntity, IGame } from '../../domain/contracts'
+import { BasicBlock } from '../../domain/entities/blocks/'
 import { GameTime } from '../../domain/entities/engine'
+import { Paddle } from '../../domain/entities/Paddle'
 import { IEntityManager } from '../../solutions/contracts'
-import { makeRenderEntitiesUseCase } from '../factories/useCases'
+import { makeRenderEntitiesUseCase, makeUpdateEntitiesUseCase } from '../factories/useCases'
 
 export class Game implements IGame {
   gameTime: GameTime
   fpsInterval: number
   frameCounter: number
+  playerPaddle: IEntity
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -23,10 +24,10 @@ export class Game implements IGame {
     }
     this.fpsInterval = 1000 / fps
     this.frameCounter = 0
+    this.playerPaddle = new Paddle({ x: 0, y: 0 })
   }
 
   gameLoop(currentTime: number): void {
-    console.log(currentTime)
     this.handleEvents()
     this.update()
     this.render(currentTime)
@@ -64,12 +65,23 @@ export class Game implements IGame {
   handleEvents() {}
 
   update() {
+    // add collision check observer using hitboxes
     // if (this.entityManager.subscribers.length > 0)
     //   this.entityManager.subscribers[0].entity.position.y += 5
+    makeUpdateEntitiesUseCase().execute({
+      entityManager: this.entityManager
+    })
   }
 
   gameStart() {
+    this.setupPlayerPaddle()
     this.gameLoop(window.performance.now())
     this.entityManager.addEntity(new BasicBlock({ x: 20, y: 20 }))
+    this.entityManager.addEntity(this.playerPaddle)
+  }
+
+  setupPlayerPaddle() {
+    this.playerPaddle = new Paddle({ x: this.canvas.width / 2, y: this.canvas.height - 40 })
+    this.playerPaddle.position.x -= this.playerPaddle.dimensions.width / 2
   }
 }
