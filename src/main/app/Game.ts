@@ -74,8 +74,12 @@ export class Game implements IGame {
   }
 
   gameStart() {
-    this.setupPlayerPaddle()
+    this.setupGame()
     this.gameLoop(window.performance.now())
+  }
+
+  setupGame() {
+    this.setupPlayerPaddle()
     this.entityManager.addEntity(new BasicBlock({ x: 20, y: 20 }))
     this.entityManager.addEntity(this.playerPaddle)
   }
