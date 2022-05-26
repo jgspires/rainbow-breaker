@@ -3,9 +3,10 @@ import { Position } from '../components'
 
 export class BasicBlock extends AbstractBlock {
   constructor(position: Position) {
-    const blockProps = {
-      colour: '#26AEFF'
+    super(position)
+    this.spriteSheetData.tint = {
+      colour: '#26AEFF',
+      opacity: 0.45
     }
-    super(blockProps, position)
   }
 }

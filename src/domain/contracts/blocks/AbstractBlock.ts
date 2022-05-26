@@ -1,7 +1,7 @@
 import { Dimensions, Hitbox, Position } from '../../entities/components'
 import { SpriteSheetData } from '../../entities/engine'
 import { SpriteHelper } from '../../entities/utils'
-import { BlockPropChanges, BlockProps, IBlock } from './IBlock'
+import { BlockProps, IBlock } from './IBlock'
 
 const defaultBlock = {
   dimensions: {
@@ -17,13 +17,11 @@ const defaultBlock = {
       columns: 4,
       rows: 1
     }
-  },
-  colour: '#FFFFFF'
+  }
 }
 
 export abstract class AbstractBlock implements IBlock {
   blockProps: BlockProps = {
-    colour: defaultBlock.colour,
     maxHealth: defaultBlock.health,
     currentHealth: defaultBlock.health
   }
@@ -32,12 +30,7 @@ export abstract class AbstractBlock implements IBlock {
   spriteSheetData: SpriteSheetData = defaultBlock.spriteSheet
   hitbox: Hitbox
 
-  constructor(blockProps: BlockPropChanges, position: Position, dimensions?: Dimensions) {
-    this.blockProps = {
-      colour: blockProps.colour || this.blockProps.colour,
-      maxHealth: blockProps.maxHealth || this.blockProps.maxHealth,
-      currentHealth: blockProps.maxHealth || this.blockProps.maxHealth
-    }
+  constructor(position: Position, dimensions?: Dimensions) {
     this.position = position
     this.dimensions = dimensions || this.dimensions
     this.hitbox = new Hitbox(this.position, this.dimensions)
@@ -51,19 +44,14 @@ export abstract class AbstractBlock implements IBlock {
   }
 
   draw(context: CanvasRenderingContext2D): void {
-    // Maybe attempt to add colour overlay to block (would be nice to have)
     const spriteIndex = this.getBlockSpriteIndex()
     const spriteStartPos = new SpriteHelper().getSpriteStartPos(spriteIndex, this.spriteSheetData)
-    context.drawImage(
-      this.spriteSheetData.spriteSheetImage,
-      spriteStartPos.x,
-      spriteStartPos.y,
-      this.spriteSheetData.spriteSize.width,
-      this.spriteSheetData.spriteSize.height,
-      this.position.x,
-      this.position.y,
-      this.dimensions.width,
-      this.dimensions.height
+    SpriteHelper.drawSprite(
+      spriteStartPos,
+      this.position,
+      this.dimensions,
+      this.spriteSheetData,
+      context
     )
   }
 

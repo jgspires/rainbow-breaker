@@ -8,4 +8,10 @@ export type SpriteSheetData = {
     columns: number
     rows: number
   }
+  tint?: TintProps
+}
+
+export type TintProps = {
+  colour: string
+  opacity: number
 }

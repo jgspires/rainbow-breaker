@@ -1,6 +1,7 @@
 import { AnimationProps } from '../../contracts'
-import { Position } from '../components'
+import { Dimensions, Position } from '../components'
 import { SpriteSheetData } from '../engine'
+import tintImage from 'canvas-tint-image'
 
 export class SpriteHelper {
   getSpriteStartPos(spriteIndex: number, spriteData: SpriteSheetData): Position {
@@ -19,8 +20,8 @@ export class SpriteHelper {
     return startPos
   }
 
-  static getAnimationCycleState(animationProps: AnimationProps, stateQty: number): number {
-    const baseFrameInterval = animationProps.maxFrame / stateQty
+  static getAnimationCycleSprite(animationProps: AnimationProps, spriteQty: number): number {
+    const baseFrameInterval = animationProps.maxFrame / spriteQty
     let frameInterval = baseFrameInterval
     let animationState = 1
     while (animationProps.currentFrame >= frameInterval) {
@@ -28,5 +29,39 @@ export class SpriteHelper {
       animationState++
     }
     return animationState
+  }
+
+  static drawSprite(
+    subRectanglePosition: Position,
+    position: Position,
+    dimensions: Dimensions,
+    spriteSheetData: SpriteSheetData,
+    context: CanvasRenderingContext2D
+  ): void {
+    let imageToDraw = spriteSheetData.spriteSheetImage
+    let tintedImage
+    if (spriteSheetData.tint) {
+      tintedImage = tintImage(
+        spriteSheetData.spriteSheetImage,
+        spriteSheetData.tint.colour,
+        spriteSheetData.tint.opacity
+      )
+    }
+    try {
+      context.drawImage(
+        tintedImage || imageToDraw,
+        subRectanglePosition.x,
+        subRectanglePosition.y,
+        spriteSheetData.spriteSize.width,
+        spriteSheetData.spriteSize.height,
+        position.x,
+        position.y,
+        dimensions.width,
+        dimensions.height
+      )
+    } catch (e) {
+      const error = e as Error
+      console.log(error.message)
+    }
   }
 }
