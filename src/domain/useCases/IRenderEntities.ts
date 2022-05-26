@@ -1,7 +1,7 @@
 import { IEntityManager } from '../../solutions/contracts'
 import { IUseCase } from './contracts'
 
-namespace IRenderEntities {
+export namespace IRenderEntities {
   export type Props = {
     entityManager: IEntityManager
     context: CanvasRenderingContext2D

@@ -1,3 +1,3 @@
 export * from './RenderEntitiesUseCase'
 export * from './UpdateEntitiesUseCase'
-export * from './MovePaddleUseCase'
+export * from './AcceleratePaddleUseCase'

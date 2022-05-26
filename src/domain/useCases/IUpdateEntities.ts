@@ -1,7 +1,7 @@
 import { IEntityManager } from '../../solutions/contracts'
 import { IUseCase } from './contracts'
 
-namespace IUpdateEntities {
+export namespace IUpdateEntities {
   export type Props = {
     entityManager: IEntityManager
   }
