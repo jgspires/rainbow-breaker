@@ -1,15 +1,20 @@
-import { IEntity, IGame } from '../../domain/contracts'
+import { IGame, IPaddle } from '../../domain/contracts'
 import { BasicBlock } from '../../domain/entities/blocks/'
-import { GameTime } from '../../domain/entities/engine'
+import { GameDirection, GameTime } from '../../domain/entities/engine'
 import { Paddle } from '../../domain/entities/Paddle'
 import { IEntityManager } from '../../solutions/contracts'
-import { makeRenderEntitiesUseCase, makeUpdateEntitiesUseCase } from '../factories/useCases'
+import {
+  makeMovePaddleUseCase,
+  makeRenderEntitiesUseCase,
+  makeUpdateEntitiesUseCase
+} from '../factories/useCases'
 
 export class Game implements IGame {
   gameTime: GameTime
   fpsInterval: number
   frameCounter: number
-  playerPaddle: IEntity
+  playerPaddle: IPaddle
+  pressedKeys: Set<string>
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -25,6 +30,11 @@ export class Game implements IGame {
     this.fpsInterval = 1000 / fps
     this.frameCounter = 0
     this.playerPaddle = new Paddle({ x: 0, y: 0 })
+    this.pressedKeys = new Set<string>()
+
+    // Add key listener (preventing default window operations)
+    document.addEventListener('keydown', e => this.keyDownHandler(e))
+    document.addEventListener('keyup', e => this.keyUpHandler(e))
   }
 
   gameLoop(currentTime: number): void {
@@ -61,10 +71,15 @@ export class Game implements IGame {
     canvas.getContext('2d')!.clearRect(0, 0, canvas.width, canvas.height)
   }
 
-  // eslint-disable-next-line no-empty-function
-  handleEvents() {}
+  handleEvents() {
+    const acceleratePaddleUseCase = makeMovePaddleUseCase()
+    if (this.keyIsPressed('right'))
+      acceleratePaddleUseCase.execute({ direction: 'right', paddle: this.playerPaddle })
+    if (this.keyIsPressed('left'))
+      acceleratePaddleUseCase.execute({ direction: 'left', paddle: this.playerPaddle })
+  }
 
-  update() {
+  update(): void {
     // add collision check observer using hitboxes
     // if (this.entityManager.subscribers.length > 0)
     //   this.entityManager.subscribers[0].entity.position.y += 5
@@ -73,18 +88,55 @@ export class Game implements IGame {
     })
   }
 
-  gameStart() {
+  gameStart(): void {
     this.setupGame()
     this.gameLoop(window.performance.now())
   }
 
-  setupGame() {
+  keyDownHandler(e: KeyboardEvent): void {
+    this.pressedKeys.add(e.code)
+  }
+
+  keyUpHandler(e: KeyboardEvent): void {
+    this.pressedKeys.delete(e.code)
+  }
+
+  keyIsPressed(direction: GameDirection): boolean {
+    switch (direction) {
+      case 'right':
+        return (
+          this.pressedKeys.has('ArrowRight') ||
+          this.pressedKeys.has('Numpad6') ||
+          this.pressedKeys.has('KeyD')
+        )
+      case 'left':
+        return (
+          this.pressedKeys.has('ArrowLeft') ||
+          this.pressedKeys.has('Numpad4') ||
+          this.pressedKeys.has('KeyA')
+        )
+      case 'up':
+        return (
+          this.pressedKeys.has('ArrowUp') ||
+          this.pressedKeys.has('Numpad8') ||
+          this.pressedKeys.has('KeyW')
+        )
+      case 'down':
+        return (
+          this.pressedKeys.has('ArrowDown') ||
+          this.pressedKeys.has('Numpad2') ||
+          this.pressedKeys.has('KeyS')
+        )
+    }
+  }
+
+  setupGame(): void {
     this.setupPlayerPaddle()
     this.entityManager.addEntity(new BasicBlock({ x: 20, y: 20 }))
     this.entityManager.addEntity(this.playerPaddle)
   }
 
-  setupPlayerPaddle() {
+  setupPlayerPaddle(): void {
     this.playerPaddle = new Paddle({ x: this.canvas.width / 2, y: this.canvas.height - 40 })
     this.playerPaddle.position.x -= this.playerPaddle.dimensions.width / 2
   }
