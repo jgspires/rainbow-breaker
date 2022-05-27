@@ -1,6 +1,4 @@
 export * from './IEntity'
 export * from './IGame'
-export * from './IBoxCollidable'
 export * from './IPaddle'
 export * from './IFrameAnimated'
-export * from './IMovable'

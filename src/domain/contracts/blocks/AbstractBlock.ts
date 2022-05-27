@@ -33,7 +33,7 @@ export abstract class AbstractBlock implements IBlock {
   constructor(position: Position, dimensions?: Dimensions) {
     this.position = position
     this.dimensions = dimensions || this.dimensions
-    this.hitbox = new Hitbox(this.position, this.dimensions)
+    this.hitbox = new Hitbox(this.position, this.dimensions, this.collide)
   }
   collide(): void {
     // TO DO

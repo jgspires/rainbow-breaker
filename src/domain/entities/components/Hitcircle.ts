@@ -1,29 +1,28 @@
-import { Dimensions, Position } from '.'
 import { IHitShape, HitType, ICollisionStrategy } from '../../contracts/collision'
 import { BoxCircleCollisionStrategy } from '../utils/collisionStrategies'
-import { Hitcircle } from './Hitcircle'
+import { Hitbox } from './Hitbox'
+import { Position } from './Position'
 
-export class Hitbox implements IHitShape {
+export class Hitcircle implements IHitShape {
   position: Position
-  dimensions: Dimensions
+  radius: number
   onCollision: Function
   hitType: HitType
 
   constructor(
     position: Position,
-    dimensions: Dimensions,
+    radius: number,
     onCollision: Function,
-    hitType: HitType = 'block'
+    hitType: HitType = 'ball'
   ) {
     this.position = position
-    this.dimensions = dimensions
+    this.radius = radius
     this.onCollision = onCollision
     this.hitType = hitType
   }
 
   isColliding(hitShape: IHitShape): boolean {
-    if (hitShape instanceof Hitcircle)
-      return new BoxCircleCollisionStrategy().execute(this, hitShape)
+    if (hitShape instanceof Hitbox) return new BoxCircleCollisionStrategy().execute(hitShape, this)
     else return false
   }
 }

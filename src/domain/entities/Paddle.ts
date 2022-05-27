@@ -30,7 +30,7 @@ export class Paddle implements IPaddle {
   constructor(position: Position) {
     this.position = position
     this.dimensions = { width: 115, height: 35 }
-    this.hitbox = new Hitbox(this.position, this.dimensions)
+    this.hitbox = new Hitbox(this.position, this.dimensions, this.collide, 'paddle')
   }
 
   accelerate(direction: PaddleDirection): void {
