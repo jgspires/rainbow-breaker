@@ -1,5 +1,5 @@
 import { AcceleratePaddleUseCase } from '../../../data/useCases'
 
-export const makeMovePaddleUseCase = (): AcceleratePaddleUseCase => {
+export const makeAcceleratePaddleUseCase = (): AcceleratePaddleUseCase => {
   return new AcceleratePaddleUseCase()
 }

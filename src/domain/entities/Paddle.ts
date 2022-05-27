@@ -55,7 +55,6 @@ export class Paddle implements IPaddle {
   }
 
   move(): void {
-    console.log(this.paddleProps.currentVelocity)
     if (this.paddleProps.currentVelocity > 0)
       this.paddleProps.currentVelocity = Math.max(
         this.paddleProps.currentVelocity - this.paddleProps.deceleration,
@@ -68,6 +67,12 @@ export class Paddle implements IPaddle {
       )
 
     this.position.x = this.position.x + this.paddleProps.currentVelocity
+  }
+
+  keepInBounds(canvas: HTMLCanvasElement): void {
+    if (this.position.x < 0) this.position.x = 0
+    else if (this.position.x + this.dimensions.width > canvas.width)
+      this.position.x = canvas.width - this.dimensions.width
   }
 
   collide(): void {

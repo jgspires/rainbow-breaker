@@ -4,7 +4,8 @@ import { GameDirection, GameTime } from '../../domain/entities/engine'
 import { Paddle } from '../../domain/entities/Paddle'
 import { IEntityManager } from '../../solutions/contracts'
 import {
-  makeMovePaddleUseCase,
+  makeAcceleratePaddleUseCase,
+  makeKeepPaddleInBoundsUseCase,
   makeRenderEntitiesUseCase,
   makeUpdateEntitiesUseCase
 } from '../factories/useCases'
@@ -72,7 +73,7 @@ export class Game implements IGame {
   }
 
   handleEvents() {
-    const acceleratePaddleUseCase = makeMovePaddleUseCase()
+    const acceleratePaddleUseCase = makeAcceleratePaddleUseCase()
     if (this.keyIsPressed('right'))
       acceleratePaddleUseCase.execute({ direction: 'right', paddle: this.playerPaddle })
     if (this.keyIsPressed('left'))
@@ -80,6 +81,8 @@ export class Game implements IGame {
   }
 
   update(): void {
+    console.log(this.playerPaddle.position.x)
+    makeKeepPaddleInBoundsUseCase().execute({ canvas: this.canvas, paddle: this.playerPaddle })
     // add collision check observer using hitboxes
     // if (this.entityManager.subscribers.length > 0)
     //   this.entityManager.subscribers[0].entity.position.y += 5

@@ -1,5 +1,4 @@
-import { GameDirection } from '../entities/engine'
-import { IBoxCollidable } from './IBoxCollidable'
+import { IBoxCollidable } from './collision'
 import { IEntity } from './IEntity'
 import { IFrameAnimated } from './IFrameAnimated'
 
@@ -15,4 +14,5 @@ export type PaddleProps = {
 export interface IPaddle extends IEntity, IBoxCollidable, IFrameAnimated {
   paddleProps: PaddleProps
   accelerate(direction: PaddleDirection): void
+  keepInBounds(canvas: HTMLCanvasElement): void
 }
