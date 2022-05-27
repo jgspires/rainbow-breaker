@@ -1,5 +1,6 @@
 import { AnimationProps, IPaddle, PaddleDirection, PaddleProps } from '../contracts'
-import { Position, Dimensions, Hitbox } from './components'
+import { HitType, ICollidable, IHitShape } from '../contracts/collision'
+import { Dimensions, Hitbox, Position } from './components'
 import { SpriteSheetData } from './engine'
 import { SpriteHelper } from './utils'
 
@@ -7,6 +8,7 @@ export class Paddle implements IPaddle {
   position: Position
   dimensions: Dimensions
   hitbox: Hitbox
+  destroyed: boolean = false
   animationProps: AnimationProps = {
     currentFrame: 0,
     maxFrame: 360
@@ -75,8 +77,12 @@ export class Paddle implements IPaddle {
       this.position.x = canvas.width - this.dimensions.width
   }
 
-  collide(): void {
-    throw new Error('Method not implemented.')
+  collide(hitType: HitType): void {
+    console.log(`Paddle colliding with hitType: ${hitType}`)
+  }
+
+  getHitShape(): IHitShape {
+    return this.hitbox
   }
 
   animate(): void {

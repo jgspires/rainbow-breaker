@@ -5,6 +5,7 @@ import { Paddle } from '../../domain/entities/Paddle'
 import { IEntityManager } from '../../solutions/contracts'
 import {
   makeAcceleratePaddleUseCase,
+  makeCheckEntityCollisionUseCase,
   makeKeepPaddleInBoundsUseCase,
   makeRenderEntitiesUseCase,
   makeUpdateEntitiesUseCase
@@ -75,17 +76,24 @@ export class Game implements IGame {
   handleEvents() {
     const acceleratePaddleUseCase = makeAcceleratePaddleUseCase()
     if (this.keyIsPressed('right'))
-      acceleratePaddleUseCase.execute({ direction: 'right', paddle: this.playerPaddle })
+      acceleratePaddleUseCase.execute({
+        direction: 'right',
+        paddle: this.playerPaddle,
+        entityManager: this.entityManager
+      })
     if (this.keyIsPressed('left'))
-      acceleratePaddleUseCase.execute({ direction: 'left', paddle: this.playerPaddle })
+      acceleratePaddleUseCase.execute({
+        direction: 'left',
+        paddle: this.playerPaddle,
+        entityManager: this.entityManager
+      })
   }
 
   update(): void {
-    console.log(this.playerPaddle.position.x)
     makeKeepPaddleInBoundsUseCase().execute({ canvas: this.canvas, paddle: this.playerPaddle })
-    // add collision check observer using hitboxes
-    // if (this.entityManager.subscribers.length > 0)
-    //   this.entityManager.subscribers[0].entity.position.y += 5
+    makeCheckEntityCollisionUseCase().execute({
+      entityManager: this.entityManager
+    })
     makeUpdateEntitiesUseCase().execute({
       entityManager: this.entityManager
     })

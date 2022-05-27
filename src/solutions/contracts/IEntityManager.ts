@@ -1,14 +1,20 @@
-import { IEntity } from '../../domain/contracts'
+import { ICollidable } from '../../domain/contracts/collision'
 import { EntitySubscriber } from '../../domain/entities/engine'
 
 export interface IEntityManager {
   subscribers: EntitySubscriber[]
 
-  addEntity(entity: IEntity): void
+  addEntity(entity: ICollidable): void
 
-  removeEntity(entity: IEntity): void
+  removeEntity(entity: ICollidable): void
+
+  removeDestroyedEntities(): void
+
+  checkMovedEntitiesCollision(): void
 
   drawEntities(context: CanvasRenderingContext2D): void
 
   updateEntities(): void
+
+  markAsMoved(entity: ICollidable): boolean
 }

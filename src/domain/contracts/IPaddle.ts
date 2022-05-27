@@ -11,7 +11,7 @@ export type PaddleProps = {
   deceleration: number
 }
 
-export interface IPaddle extends IEntity, IBoxCollidable, IFrameAnimated {
+export interface IPaddle extends IBoxCollidable, IFrameAnimated {
   paddleProps: PaddleProps
   accelerate(direction: PaddleDirection): void
   keepInBounds(canvas: HTMLCanvasElement): void

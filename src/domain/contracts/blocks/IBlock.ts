@@ -1,11 +1,10 @@
-import { IBoxCollidable } from '../IBoxCollidable'
-import { IEntity } from '../IEntity'
+import { IBoxCollidable } from '../collision'
 
 export type BlockProps = {
   maxHealth: number
   currentHealth: number
 }
 
-export interface IBlock extends IEntity, IBoxCollidable {
+export interface IBlock extends IBoxCollidable {
   blockProps: BlockProps
 }

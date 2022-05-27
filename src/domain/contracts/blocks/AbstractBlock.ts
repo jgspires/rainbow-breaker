@@ -1,7 +1,8 @@
 import { Dimensions, Hitbox, Position } from '../../entities/components'
 import { SpriteSheetData } from '../../entities/engine'
 import { SpriteHelper } from '../../entities/utils'
-import { BlockProps, IBlock } from './IBlock'
+import { HitType, IHitShape } from '../collision'
+import { IBlock, BlockProps } from '.'
 
 const defaultBlock = {
   dimensions: {
@@ -25,6 +26,7 @@ export abstract class AbstractBlock implements IBlock {
     maxHealth: defaultBlock.health,
     currentHealth: defaultBlock.health
   }
+  destroyed: boolean = false
   dimensions: Dimensions = defaultBlock.dimensions
   position: Position
   spriteSheetData: SpriteSheetData = defaultBlock.spriteSheet
@@ -35,8 +37,21 @@ export abstract class AbstractBlock implements IBlock {
     this.dimensions = dimensions || this.dimensions
     this.hitbox = new Hitbox(this.position, this.dimensions, this.collide)
   }
-  collide(): void {
-    // TO DO
+
+  getHitShape(): IHitShape {
+    return this.hitbox
+  }
+
+  collide(hitType: HitType): void {
+    console.log(`Block colliding with hitType: ${hitType}`)
+
+    if (hitType === 'ball') this.takeDamage()
+  }
+
+  takeDamage(): void {
+    console.log('Taking damage!')
+    this.blockProps.currentHealth -= 1
+    if (this.blockProps.currentHealth <= 0) this.destroyed = true
   }
 
   update(): void {

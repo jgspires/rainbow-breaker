@@ -1,6 +1,7 @@
-import { IEntity } from '../../contracts'
+import { ICollidable } from '../../contracts/collision'
 
 export type EntitySubscriber = {
   _id: number
-  entity: IEntity
+  moved: boolean
+  entity: ICollidable
 }
