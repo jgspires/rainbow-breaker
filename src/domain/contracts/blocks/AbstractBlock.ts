@@ -55,7 +55,7 @@ export abstract class AbstractBlock implements IBlock {
   }
 
   update(): void {
-    console.log(`updating block ${this}`)
+    // console.log(`updating block ${this}`)
   }
 
   draw(context: CanvasRenderingContext2D): void {

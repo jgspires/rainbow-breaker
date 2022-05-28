@@ -2,6 +2,6 @@ import { ICollidable } from '../../contracts/collision'
 
 export type EntitySubscriber = {
   _id: number
-  moved: boolean
+  alwaysCheckCollision: boolean
   entity: ICollidable
 }

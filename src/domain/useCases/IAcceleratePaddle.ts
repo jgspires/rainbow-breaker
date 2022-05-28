@@ -4,7 +4,6 @@ import { IUseCase } from './contracts'
 
 export namespace IAcceleratePaddle {
   export type Props = {
-    entityManager: IEntityManager
     paddle: IPaddle
     direction: PaddleDirection
   }

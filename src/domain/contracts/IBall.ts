@@ -1,10 +1,21 @@
-import { VelocityProps } from '../entities/components'
+import { Position } from '../entities/components'
+import { GameDirection } from '../entities/engine'
 import { ICircleCollision } from './collision'
 import { ICircle } from './ICircle'
-import { PaddleDirection } from './IPaddle'
+
+export type BallState = 'moving' | 'paddle'
+
+export type BallProps = {
+  state: BallState
+  currentVelocity: Position
+  maxVelocity: number
+  acceleration: number
+  deceleration: number
+}
 
 export interface IBall extends ICircleCollision, ICircle {
-  paddleProps: VelocityProps
-  accelerate(direction: PaddleDirection): void
+  ballProps: BallProps
+  accelerate(direction: GameDirection): void
   keepInBounds(canvas: HTMLCanvasElement): void
+  launch(paddleVelocity: number): void
 }

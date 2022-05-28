@@ -1,7 +1,7 @@
-import { IGame, IPaddle } from '../../domain/contracts'
+import { IBall, IGame, IPaddle } from '../../domain/contracts'
 import { BasicBlock } from '../../domain/entities/blocks/'
 import { GameDirection, GameTime } from '../../domain/entities/engine'
-import { Paddle } from '../../domain/entities/Paddle'
+import { Ball, Paddle } from '../../domain/entities'
 import { IEntityManager } from '../../solutions/contracts'
 import {
   makeAcceleratePaddleUseCase,
@@ -10,13 +10,20 @@ import {
   makeRenderEntitiesUseCase,
   makeUpdateEntitiesUseCase
 } from '../factories/useCases'
+import { IBlock } from '../../domain/contracts/blocks'
+import { makeLaunchBallUseCase } from '../factories/useCases/LaunchBallUseCase'
+import { makeMoveBallWithPaddleUseCase } from '../factories/useCases/MoveBallWithPaddleUseCase'
 
 export class Game implements IGame {
   gameTime: GameTime
   fpsInterval: number
   frameCounter: number
-  playerPaddle: IPaddle
   pressedKeys: Set<string>
+  gameEntities: {
+    playerPaddle: IPaddle
+    ball: IBall
+    blocks: IBlock[]
+  }
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -31,8 +38,12 @@ export class Game implements IGame {
     }
     this.fpsInterval = 1000 / fps
     this.frameCounter = 0
-    this.playerPaddle = new Paddle({ x: 0, y: 0 })
     this.pressedKeys = new Set<string>()
+    this.gameEntities = {
+      playerPaddle: new Paddle({ x: 0, y: 0 }),
+      ball: new Ball({ x: 0, y: 0 }, 10),
+      blocks: []
+    }
 
     // Add key listener (preventing default window operations)
     document.addEventListener('keydown', e => this.keyDownHandler(e))
@@ -75,27 +86,37 @@ export class Game implements IGame {
 
   handleEvents() {
     const acceleratePaddleUseCase = makeAcceleratePaddleUseCase()
-    if (this.keyIsPressed('right'))
+    if (this.directionIsPressed('right'))
       acceleratePaddleUseCase.execute({
         direction: 'right',
-        paddle: this.playerPaddle,
-        entityManager: this.entityManager
+        paddle: this.gameEntities.playerPaddle
       })
-    if (this.keyIsPressed('left'))
+    if (this.directionIsPressed('left'))
       acceleratePaddleUseCase.execute({
         direction: 'left',
-        paddle: this.playerPaddle,
-        entityManager: this.entityManager
+        paddle: this.gameEntities.playerPaddle
+      })
+    if (this.pressedKeys.has('Space'))
+      makeLaunchBallUseCase().execute({
+        ball: this.gameEntities.ball,
+        paddle: this.gameEntities.playerPaddle
       })
   }
 
   update(): void {
-    makeKeepPaddleInBoundsUseCase().execute({ canvas: this.canvas, paddle: this.playerPaddle })
+    makeKeepPaddleInBoundsUseCase().execute({
+      canvas: this.canvas,
+      paddle: this.gameEntities.playerPaddle
+    })
     makeCheckEntityCollisionUseCase().execute({
       entityManager: this.entityManager
     })
     makeUpdateEntitiesUseCase().execute({
       entityManager: this.entityManager
+    })
+    makeMoveBallWithPaddleUseCase().execute({
+      ball: this.gameEntities.ball,
+      paddle: this.gameEntities.playerPaddle
     })
   }
 
@@ -112,7 +133,7 @@ export class Game implements IGame {
     this.pressedKeys.delete(e.code)
   }
 
-  keyIsPressed(direction: GameDirection): boolean {
+  directionIsPressed(direction: GameDirection): boolean {
     switch (direction) {
       case 'right':
         return (
@@ -143,12 +164,23 @@ export class Game implements IGame {
 
   setupGame(): void {
     this.setupPlayerPaddle()
+    this.setupBall()
     this.entityManager.addEntity(new BasicBlock({ x: 20, y: 20 }))
-    this.entityManager.addEntity(this.playerPaddle)
   }
 
   setupPlayerPaddle(): void {
-    this.playerPaddle = new Paddle({ x: this.canvas.width / 2, y: this.canvas.height - 40 })
-    this.playerPaddle.position.x -= this.playerPaddle.dimensions.width / 2
+    this.gameEntities.playerPaddle.position = {
+      x: this.canvas.width / 2,
+      y: this.canvas.height - 40
+    }
+    this.gameEntities.playerPaddle.position.x -= this.gameEntities.playerPaddle.dimensions.width / 2
+    this.entityManager.addEntity(this.gameEntities.playerPaddle, true)
+  }
+
+  setupBall(): void {
+    this.gameEntities.ball.position = { ...this.gameEntities.playerPaddle.position }
+    this.gameEntities.ball.position.x += this.gameEntities.playerPaddle.dimensions.width / 2
+    this.gameEntities.ball.position.y -= this.gameEntities.ball.radius
+    this.entityManager.addEntity(this.gameEntities.ball, true)
   }
 }

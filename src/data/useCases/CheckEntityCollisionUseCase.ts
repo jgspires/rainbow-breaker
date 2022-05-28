@@ -4,7 +4,7 @@ import { Either, right } from '../../shared'
 
 export class CheckEntityCollisionUseCase implements ICheckEntityCollision {
   execute(props: ICheckEntityCollision.Props): Either<IUseCaseError, null> {
-    props.entityManager.checkMovedEntitiesCollision()
+    props.entityManager.checkEntityCollision()
     return right(null)
   }
 }

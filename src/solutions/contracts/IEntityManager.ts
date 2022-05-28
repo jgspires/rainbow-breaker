@@ -4,17 +4,15 @@ import { EntitySubscriber } from '../../domain/entities/engine'
 export interface IEntityManager {
   subscribers: EntitySubscriber[]
 
-  addEntity(entity: ICollidable): void
+  addEntity(entity: ICollidable, alwaysCheckCollision?: boolean): void
 
   removeEntity(entity: ICollidable): void
 
   removeDestroyedEntities(): void
 
-  checkMovedEntitiesCollision(): void
+  checkEntityCollision(): void
 
   drawEntities(context: CanvasRenderingContext2D): void
 
   updateEntities(): void
-
-  markAsMoved(entity: ICollidable): boolean
 }

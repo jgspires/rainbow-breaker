@@ -9,8 +9,8 @@ export class EntityManager implements IEntityManager {
 
   constructor() {}
 
-  addEntity(entity: ICollidable): void {
-    this.subscribers.push({ entity, _id: this.generateUniqueId(), moved: false })
+  addEntity(entity: ICollidable, alwaysCheckCollision: boolean = false): void {
+    this.subscribers.push({ entity, _id: this.generateUniqueId(), alwaysCheckCollision })
   }
 
   removeEntity(entity: ICollidable): void {
@@ -36,23 +36,16 @@ export class EntityManager implements IEntityManager {
     this.subscribers = this.subscribers.filter(sub => sub.entity.destroyed !== true)
   }
 
-  checkMovedEntitiesCollision(): void {
-    const subscribersThatMoved = this.subscribers.filter(subscriber => subscriber.moved === true)
+  checkEntityCollision(): void {
+    const subscribersToCheck = this.subscribers.filter(
+      subscriber => subscriber.alwaysCheckCollision === true
+    )
 
-    for (const movingSub of subscribersThatMoved) {
-      const otherSubscribers = this.subscribers.filter(sub => sub !== movingSub)
+    for (const actingSub of subscribersToCheck) {
+      const otherSubscribers = this.subscribers.filter(sub => sub !== actingSub)
       for (const otherSub of otherSubscribers)
-        CollisionHelper.checkCollision(movingSub.entity, otherSub.entity)
-      movingSub.moved = false
+        CollisionHelper.checkCollision(actingSub.entity, otherSub.entity)
     }
-  }
-
-  markAsMoved(entity: ICollidable): boolean {
-    const entitySubscriber = this.subscribers.find(subscriber => subscriber.entity === entity)
-    if (!entitySubscriber) return false
-
-    entitySubscriber.moved = true
-    return true
   }
 
   generateUniqueId(): number {
