@@ -1,6 +1,6 @@
 import { Hitbox } from '../../entities/components'
 import { ICollidable } from './ICollidable'
 
-export interface IBoxCollidable extends ICollidable {
+export interface IBoxCollision extends ICollidable {
   hitbox: Hitbox
 }

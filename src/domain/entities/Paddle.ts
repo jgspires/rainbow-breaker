@@ -1,6 +1,6 @@
-import { AnimationProps, IPaddle, PaddleDirection, PaddleProps } from '../contracts'
-import { HitType, ICollidable, IHitShape } from '../contracts/collision'
-import { Dimensions, Hitbox, Position } from './components'
+import { AnimationProps, IPaddle, PaddleDirection } from '../contracts'
+import { HitType, IHitShape } from '../contracts/collision'
+import { Dimensions, Hitbox, Position, VelocityProps } from './components'
 import { SpriteSheetData } from './engine'
 import { SpriteHelper } from './utils'
 
@@ -13,7 +13,7 @@ export class Paddle implements IPaddle {
     currentFrame: 0,
     maxFrame: 360
   }
-  paddleProps: PaddleProps = {
+  velocityProps: VelocityProps = {
     currentVelocity: 0.0,
     acceleration: 1.5,
     deceleration: 0.25,
@@ -37,18 +37,18 @@ export class Paddle implements IPaddle {
 
   accelerate(direction: PaddleDirection): void {
     if (
-      (direction === 'right' && this.paddleProps.currentVelocity < 0) ||
-      (direction === 'left' && this.paddleProps.currentVelocity > 0)
+      (direction === 'right' && this.velocityProps.currentVelocity < 0) ||
+      (direction === 'left' && this.velocityProps.currentVelocity > 0)
     )
-      this.paddleProps.currentVelocity = 0
+      this.velocityProps.currentVelocity = 0
 
-    if (direction === 'right') this.paddleProps.currentVelocity += this.paddleProps.acceleration
-    else this.paddleProps.currentVelocity -= this.paddleProps.acceleration
+    if (direction === 'right') this.velocityProps.currentVelocity += this.velocityProps.acceleration
+    else this.velocityProps.currentVelocity -= this.velocityProps.acceleration
 
-    if (this.paddleProps.currentVelocity > this.paddleProps.maxVelocity)
-      this.paddleProps.currentVelocity = this.paddleProps.maxVelocity
-    else if (this.paddleProps.currentVelocity < this.paddleProps.maxVelocity * -1)
-      this.paddleProps.currentVelocity = this.paddleProps.maxVelocity * -1
+    if (this.velocityProps.currentVelocity > this.velocityProps.maxVelocity)
+      this.velocityProps.currentVelocity = this.velocityProps.maxVelocity
+    else if (this.velocityProps.currentVelocity < this.velocityProps.maxVelocity * -1)
+      this.velocityProps.currentVelocity = this.velocityProps.maxVelocity * -1
   }
 
   update(): void {
@@ -57,18 +57,18 @@ export class Paddle implements IPaddle {
   }
 
   move(): void {
-    if (this.paddleProps.currentVelocity > 0)
-      this.paddleProps.currentVelocity = Math.max(
-        this.paddleProps.currentVelocity - this.paddleProps.deceleration,
+    if (this.velocityProps.currentVelocity > 0)
+      this.velocityProps.currentVelocity = Math.max(
+        this.velocityProps.currentVelocity - this.velocityProps.deceleration,
         0
       )
-    else if (this.paddleProps.currentVelocity < 0)
-      this.paddleProps.currentVelocity = Math.min(
-        this.paddleProps.currentVelocity + this.paddleProps.deceleration,
+    else if (this.velocityProps.currentVelocity < 0)
+      this.velocityProps.currentVelocity = Math.min(
+        this.velocityProps.currentVelocity + this.velocityProps.deceleration,
         0
       )
 
-    this.position.x = this.position.x + this.paddleProps.currentVelocity
+    this.position.x = this.position.x + this.velocityProps.currentVelocity
   }
 
   keepInBounds(canvas: HTMLCanvasElement): void {

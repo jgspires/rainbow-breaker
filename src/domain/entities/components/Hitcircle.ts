@@ -1,9 +1,10 @@
-import { IHitShape, HitType, ICollisionStrategy } from '../../contracts/collision'
+import { ICircle } from '../../contracts'
+import { IHitShape, HitType } from '../../contracts/collision'
 import { BoxCircleCollisionStrategy } from '../utils/collisionStrategies'
 import { Hitbox } from './Hitbox'
 import { Position } from './Position'
 
-export class Hitcircle implements IHitShape {
+export class Hitcircle implements IHitShape, ICircle {
   position: Position
   radius: number
   onCollision: Function
