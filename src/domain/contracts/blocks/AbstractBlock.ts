@@ -1,4 +1,4 @@
-import { Dimensions, Hitbox, Position } from '../../entities/components'
+import { Dimensions, Hitbox, Point } from '../../entities/components'
 import { SpriteSheetData } from '../../entities/engine'
 import { SpriteHelper } from '../../entities/utils'
 import { HitType, IHitShape } from '../collision'
@@ -28,14 +28,14 @@ export abstract class AbstractBlock implements IBlock {
   }
   destroyed: boolean = false
   dimensions: Dimensions = defaultBlock.dimensions
-  position: Position
+  position: Point
   spriteSheetData: SpriteSheetData = defaultBlock.spriteSheet
   hitbox: Hitbox
 
-  constructor(position: Position, dimensions?: Dimensions) {
+  constructor(position: Point, dimensions?: Dimensions) {
     this.position = position
     this.dimensions = dimensions || this.dimensions
-    this.hitbox = new Hitbox(this.position, this.dimensions, this.collide)
+    this.hitbox = new Hitbox(this.position, this.dimensions, this.collide.bind(this))
   }
 
   getHitShape(): IHitShape {
@@ -43,6 +43,7 @@ export abstract class AbstractBlock implements IBlock {
   }
 
   collide(hitType: HitType): void {
+    console.log(this)
     console.log(`Block colliding with hitType: ${hitType}`)
 
     if (hitType === 'ball') this.takeDamage()

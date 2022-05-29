@@ -1,12 +1,12 @@
 import { AnimationProps } from '../../contracts'
-import { Dimensions, Position } from '../components'
+import { Dimensions, Point } from '../components'
 import { SpriteSheetData } from '../engine'
 import tintImage from 'canvas-tint-image'
 
 export class SpriteHelper {
-  getSpriteStartPos(spriteIndex: number, spriteData: SpriteSheetData): Position {
+  getSpriteStartPos(spriteIndex: number, spriteData: SpriteSheetData): Point {
     let currentRow = 1
-    const startPos: Position = {
+    const startPos: Point = {
       x: 0,
       y: 0
     }
@@ -32,8 +32,8 @@ export class SpriteHelper {
   }
 
   static drawSprite(
-    subRectanglePosition: Position,
-    position: Position,
+    subRectanglePosition: Point,
+    position: Point,
     dimensions: Dimensions,
     spriteSheetData: SpriteSheetData,
     context: CanvasRenderingContext2D

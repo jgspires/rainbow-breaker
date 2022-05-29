@@ -1,4 +1,4 @@
-import { Position } from '../entities/components'
+import { Point } from '../entities/components'
 import { GameDirection } from '../entities/engine'
 import { ICircleCollision } from './collision'
 import { ICircle } from './ICircle'
@@ -7,10 +7,8 @@ export type BallState = 'moving' | 'paddle'
 
 export type BallProps = {
   state: BallState
-  currentVelocity: Position
+  velocity: Point
   maxVelocity: number
-  acceleration: number
-  deceleration: number
 }
 
 export interface IBall extends ICircleCollision, ICircle {

@@ -1,18 +1,18 @@
 import { BallProps, IBall } from '../contracts/'
 import { HitType, IHitShape } from '../contracts/collision'
-import { Hitcircle, Position } from './components'
+import { Hitcircle, Point } from './components'
 import { GameDirection, SpriteSheetData } from './engine'
 import { SpriteHelper } from './utils'
 
 export class Ball implements IBall {
   destroyed: boolean
-  position: Position
+  position: Point
   spriteSheetData: SpriteSheetData
   ballProps: BallProps
   hitcircle: Hitcircle
   radius: number
 
-  constructor(position: Position, radius: number) {
+  constructor(position: Point, radius: number) {
     this.position = position
     this.radius = radius
     this.hitcircle = new Hitcircle(position, radius, this.collide, 'ball')
@@ -30,22 +30,24 @@ export class Ball implements IBall {
 
     this.ballProps = {
       state: 'paddle',
-      currentVelocity: {
+      velocity: {
         x: 0.0,
         y: 0.0
       },
-      acceleration: 1.5,
-      deceleration: 0.25,
       maxVelocity: 7.0
     }
   }
 
   launch(paddleVelocity: number): void {
-    const launchVelocity = this.ballProps.acceleration * 3 * -1
+    const launchVelocity = this.ballProps.maxVelocity * -1
     this.ballProps.state = 'moving'
-    if (paddleVelocity === 0) {
-      this.ballProps.currentVelocity.y = launchVelocity
-    }
+    if (paddleVelocity > 0) {
+      this.ballProps.velocity.y = launchVelocity
+      this.ballProps.velocity.x = -launchVelocity
+    } else if (paddleVelocity < 0) {
+      this.ballProps.velocity.y = launchVelocity
+      this.ballProps.velocity.x = launchVelocity
+    } else this.ballProps.velocity.y = launchVelocity
   }
 
   accelerate(direction: GameDirection): void {
@@ -53,8 +55,8 @@ export class Ball implements IBall {
   }
 
   move(): void {
-    this.position.x = this.position.x + this.ballProps.currentVelocity.x
-    this.position.y = this.position.y + this.ballProps.currentVelocity.y
+    this.position.x = this.position.x + this.ballProps.velocity.x
+    this.position.y = this.position.y + this.ballProps.velocity.y
     this.updateHitShapePosition()
   }
 
@@ -74,7 +76,7 @@ export class Ball implements IBall {
 
   draw(context: CanvasRenderingContext2D): void {
     const spriteStartPos = new SpriteHelper().getSpriteStartPos(0, this.spriteSheetData)
-    const adjustedPosition: Position = {
+    const adjustedPosition: Point = {
       x: this.position.x - this.radius,
       y: this.position.y - this.radius
     }

@@ -1,11 +1,11 @@
 import { AnimationProps, IPaddle, PaddleDirection, PaddleProps } from '../contracts'
 import { HitType, IHitShape } from '../contracts/collision'
-import { Dimensions, Hitbox, Position } from './components'
+import { Dimensions, Hitbox, Point } from './components'
 import { SpriteSheetData } from './engine'
 import { SpriteHelper } from './utils'
 
 export class Paddle implements IPaddle {
-  position: Position
+  position: Point
   dimensions: Dimensions
   hitbox: Hitbox
   destroyed: boolean
@@ -13,7 +13,7 @@ export class Paddle implements IPaddle {
   paddleProps: PaddleProps
   spriteSheetData: SpriteSheetData
 
-  constructor(position: Position) {
+  constructor(position: Point) {
     this.position = position
     this.dimensions = { width: 115, height: 35 }
     this.hitbox = new Hitbox(this.position, this.dimensions, this.collide, 'paddle')

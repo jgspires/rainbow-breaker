@@ -1,8 +1,8 @@
 import { AbstractBlock } from '../../contracts/blocks'
-import { Position } from '../components'
+import { Point } from '../components'
 
 export class BasicBlock extends AbstractBlock {
-  constructor(position: Position) {
+  constructor(position: Point) {
     super(position)
     this.spriteSheetData.tint = {
       colour: '#26AEFF',

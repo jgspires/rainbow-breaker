@@ -1,17 +1,17 @@
-import { Dimensions, Position } from '.'
+import { Dimensions, Point } from '.'
 import { IRectangle } from '../../contracts'
 import { IHitShape, HitType } from '../../contracts/collision'
 import { BoxCircleCollisionStrategy } from '../utils/collisionStrategies'
 import { Hitcircle } from './Hitcircle'
 
 export class Hitbox implements IHitShape, IRectangle {
-  position: Position
+  position: Point
   dimensions: Dimensions
   onCollision: Function
   hitType: HitType
 
   constructor(
-    position: Position,
+    position: Point,
     dimensions: Dimensions,
     onCollision: Function,
     hitType: HitType = 'block'

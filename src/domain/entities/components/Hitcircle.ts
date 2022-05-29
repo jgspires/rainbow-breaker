@@ -2,20 +2,15 @@ import { ICircle } from '../../contracts'
 import { IHitShape, HitType } from '../../contracts/collision'
 import { BoxCircleCollisionStrategy } from '../utils/collisionStrategies'
 import { Hitbox } from './Hitbox'
-import { Position } from './Position'
+import { Point } from './Position'
 
 export class Hitcircle implements IHitShape, ICircle {
-  position: Position
+  position: Point
   radius: number
   onCollision: Function
   hitType: HitType
 
-  constructor(
-    position: Position,
-    radius: number,
-    onCollision: Function,
-    hitType: HitType = 'ball'
-  ) {
+  constructor(position: Point, radius: number, onCollision: Function, hitType: HitType = 'ball') {
     this.position = position
     this.radius = radius
     this.onCollision = onCollision
