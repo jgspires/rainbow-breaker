@@ -41,7 +41,6 @@ export class SpriteHelper {
     let imageToDraw = spriteSheetData.spriteSheetImage
     let tintedImage
     if (spriteSheetData.tint) {
-      console.log(spriteSheetData.tint)
       tintedImage = tintImage(
         spriteSheetData.spriteSheetImage,
         spriteSheetData.tint.colour,

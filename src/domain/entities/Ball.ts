@@ -93,7 +93,7 @@ export class Ball implements IBall {
     if (hitType !== 'block' && hitType !== 'paddle') return
 
     if (hitType === 'paddle' && this.ballProps.noCollisionFrames.current !== 0) return
-    if (hitType === 'block' && this.ballProps.noCollisionFrames.current > 8) return
+    if (hitType === 'block' && this.ballProps.noCollisionFrames.current >= 5) return
 
     const hitbox = hitShape as Hitbox
     const side = this.getCollisionSide(hitbox)
@@ -128,7 +128,7 @@ export class Ball implements IBall {
     this.ballProps.noCollisionFrames.current = this.ballProps.noCollisionFrames.base
   }
 
-  getCollisionSide(hitbox: Hitbox): GameDirection {
+  getCollisionSide(hitbox: Hitbox): GameDirection | null {
     const paddleHalfW = hitbox.dimensions.width / 2
     const paddleHalfH = hitbox.dimensions.height / 2
     const ballCenterX = this.hitcircle.position.x
@@ -162,8 +162,7 @@ export class Ball implements IBall {
         }
       }
     }
-    if (depthX !== 0) return 'down'
-    else return 'up'
+    return null
   }
 
   getHitShape(): IHitShape {
@@ -196,7 +195,8 @@ export class Ball implements IBall {
   update(): void {
     this.move()
     this.updateHitShapePosition()
-    this.ballProps.noCollisionFrames.current -= 1
+    if (this.ballProps.noCollisionFrames.current > 0) this.ballProps.noCollisionFrames.current -= 1
+
     if (this.ballProps.noCollisionFrames.current < 0) this.ballProps.noCollisionFrames.current = 0
   }
 
