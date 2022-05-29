@@ -16,7 +16,7 @@ export class Paddle implements IPaddle {
   constructor(position: Point) {
     this.position = position
     this.dimensions = { width: 115, height: 35 }
-    this.hitbox = new Hitbox(this.position, this.dimensions, this.collide, 'paddle')
+    this.hitbox = new Hitbox(this.position, this.dimensions, this.collide.bind(this), 'paddle')
     this.destroyed = false
 
     this.spriteSheetData = {
@@ -36,9 +36,9 @@ export class Paddle implements IPaddle {
 
     this.paddleProps = {
       currentVelocity: 0.0,
-      acceleration: 1.5,
-      deceleration: 0.25,
-      maxVelocity: 5.0
+      acceleration: 3.25,
+      deceleration: 0.5,
+      maxVelocity: 7.5
     }
   }
 
@@ -85,9 +85,7 @@ export class Paddle implements IPaddle {
       this.position.x = canvas.width - this.dimensions.width
   }
 
-  collide(hitType: HitType): void {
-    console.log(`Paddle colliding with hitType: ${hitType}`)
-  }
+  collide(hitType: HitType): void {}
 
   getHitShape(): IHitShape {
     return this.hitbox

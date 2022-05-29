@@ -43,9 +43,6 @@ export abstract class AbstractBlock implements IBlock {
   }
 
   collide(hitType: HitType): void {
-    console.log(this)
-    console.log(`Block colliding with hitType: ${hitType}`)
-
     if (hitType === 'ball') this.takeDamage()
   }
 

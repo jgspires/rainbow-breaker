@@ -3,6 +3,6 @@ export type AnimationProps = {
   maxFrame: number
 }
 
-export type IFrameAnimated = {
+export interface IFrameAnimated {
   animationProps: AnimationProps
 }

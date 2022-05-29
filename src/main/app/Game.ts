@@ -6,7 +6,7 @@ import { IEntityManager } from '../../solutions/contracts'
 import {
   makeAcceleratePaddleUseCase,
   makeCheckEntityCollisionUseCase,
-  makeKeepPaddleInBoundsUseCase,
+  makeKeepEntityInBoundsUseCase,
   makeRenderEntitiesUseCase,
   makeUpdateEntitiesUseCase
 } from '../factories/useCases'
@@ -41,7 +41,7 @@ export class Game implements IGame {
     this.pressedKeys = new Set<string>()
     this.gameEntities = {
       playerPaddle: new Paddle({ x: 0, y: 0 }),
-      ball: new Ball({ x: 0, y: 0 }, 10),
+      ball: new Ball({ x: 0, y: 0 }, 10, new Paddle({ x: 0, y: 0 })),
       blocks: []
     }
 
@@ -104,9 +104,14 @@ export class Game implements IGame {
   }
 
   update(): void {
-    makeKeepPaddleInBoundsUseCase().execute({
+    const keepEntityInBounds = makeKeepEntityInBoundsUseCase()
+    keepEntityInBounds.execute({
       canvas: this.canvas,
-      paddle: this.gameEntities.playerPaddle
+      entity: this.gameEntities.playerPaddle
+    })
+    keepEntityInBounds.execute({
+      canvas: this.canvas,
+      entity: this.gameEntities.ball
     })
     makeCheckEntityCollisionUseCase().execute({
       entityManager: this.entityManager
@@ -181,6 +186,7 @@ export class Game implements IGame {
     this.gameEntities.ball.position = { ...this.gameEntities.playerPaddle.position }
     this.gameEntities.ball.position.x += this.gameEntities.playerPaddle.dimensions.width / 2
     this.gameEntities.ball.position.y -= this.gameEntities.ball.radius
+    this.gameEntities.ball.ballProps.paddle = this.gameEntities.playerPaddle
     this.entityManager.addEntity(this.gameEntities.ball, true)
   }
 }

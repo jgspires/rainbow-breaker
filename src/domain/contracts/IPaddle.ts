@@ -1,4 +1,5 @@
 import { IBoxCollision } from './collision'
+import { IBounded } from './IBounded'
 import { IFrameAnimated } from './IFrameAnimated'
 import { IRectangle } from './IRectangle'
 
@@ -11,8 +12,7 @@ export type PaddleProps = {
   deceleration: number
 }
 
-export interface IPaddle extends IBoxCollision, IFrameAnimated, IRectangle {
+export interface IPaddle extends IBoxCollision, IFrameAnimated, IRectangle, IBounded {
   paddleProps: PaddleProps
   accelerate(direction: PaddleDirection): void
-  keepInBounds(canvas: HTMLCanvasElement): void
 }
