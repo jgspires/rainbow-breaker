@@ -47,7 +47,6 @@ export abstract class AbstractBlock implements IBlock {
   }
 
   takeDamage(): void {
-    console.log('Taking damage!')
     this.blockProps.currentHealth -= 1
     if (this.blockProps.currentHealth <= 0) this.destroyed = true
   }
@@ -72,8 +71,6 @@ export abstract class AbstractBlock implements IBlock {
     if (this.blockProps.currentHealth / this.blockProps.maxHealth === 1) return 0
     else if (this.blockProps.currentHealth / this.blockProps.maxHealth >= 0.7) return 1
     else if (this.blockProps.currentHealth / this.blockProps.maxHealth >= 0.5) return 2
-    else if (this.blockProps.currentHealth / this.blockProps.maxHealth >= 0.3) return 3
-
-    return -1
+    else return 3
   }
 }
