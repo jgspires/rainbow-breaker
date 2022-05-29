@@ -1,8 +1,8 @@
 import { IBall, IGame, IPaddle } from '../../domain/contracts'
-import { BasicBlock } from '../../domain/entities/blocks/'
+import { BasicBlock, HeavyBlock } from '../../domain/entities/blocks/'
 import { GameDirection, GameTime } from '../../domain/entities/engine'
 import { Ball, Paddle } from '../../domain/entities'
-import { IEntityManager } from '../../solutions/contracts'
+import { IBlockStager, IEntityManager } from '../../solutions/contracts'
 import {
   makeAcceleratePaddleUseCase,
   makeCheckEntityCollisionUseCase,
@@ -28,6 +28,7 @@ export class Game implements IGame {
   constructor(
     private canvas: HTMLCanvasElement,
     private entityManager: IEntityManager,
+    private blockStager: IBlockStager,
     fps: number
   ) {
     const now = window.performance.now()
@@ -170,7 +171,18 @@ export class Game implements IGame {
   setupGame(): void {
     this.setupPlayerPaddle()
     this.setupBall()
-    this.entityManager.addEntity(new BasicBlock({ x: 20, y: 20 }))
+    const layoutSetup = [
+      ['4', '4', '3', '2', '1', '1', '2', '3', '4', '4'],
+      ['4', '3', '2', '1', '1', '1', '1', '2', '3', '4'],
+      ['3', '2', '1', '1', '1', '1', '1', '1', '2', '3'],
+      ['4', '3', '2', '1', '1', '1', '1', '2', '3', '4'],
+      ['4', '4', '3', '2', '1', '1', '2', '3', '4', '4']
+    ]
+    this.blockStager.addLayout(layoutSetup)
+    const layout = this.blockStager.createLayout(0)!
+    for (const block of layout) {
+      this.entityManager.addEntity(block)
+    }
   }
 
   setupPlayerPaddle(): void {

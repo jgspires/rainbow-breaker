@@ -4,7 +4,7 @@ import { SpriteHelper } from '../../entities/utils'
 import { HitType, IHitShape } from '../collision'
 import { IBlock, BlockProps } from '.'
 
-const defaultBlock = {
+export const defaultBlock = {
   dimensions: {
     width: 80,
     height: 40
@@ -29,7 +29,7 @@ export abstract class AbstractBlock implements IBlock {
   destroyed: boolean = false
   dimensions: Dimensions = defaultBlock.dimensions
   position: Point
-  spriteSheetData: SpriteSheetData = defaultBlock.spriteSheet
+  spriteSheetData: SpriteSheetData = { ...defaultBlock.spriteSheet }
   hitbox: Hitbox
 
   constructor(position: Point, dimensions?: Dimensions) {

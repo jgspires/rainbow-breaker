@@ -37,8 +37,8 @@ export class Paddle implements IPaddle {
     this.paddleProps = {
       currentVelocity: 0.0,
       acceleration: 3.25,
-      deceleration: 0.5,
-      maxVelocity: 7.5
+      deceleration: 0.75,
+      maxVelocity: 10.0
     }
   }
 
