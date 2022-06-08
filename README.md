@@ -3,16 +3,16 @@
 This is a simple block breaking game similar to the likes of the retro game Arkanoid, where the player controls a horizontal paddle in order to bounce a ball off it multiple times and use it break the blocks on the higher portion of the screen.
 
 # Table of Contents
-* [Description](https://github.com/jgspires/block-breaker#Description)
-* [Repo Structure](https://github.com/jgspires/block-breaker#repo-structure)
-  * [src](https://github.com/jgspires/block-breaker#src)
-  * [imgs](https://github.com/jgspires/block-breaker#imgs)
-  * [Screenshots](https://github.com/jgspires/block-breaker#screenshots)
-* [How to Run it?](https://github.com/jgspires/block-breaker#how-to-run-it)
-* [Controls](https://github.com/jgspires/block-breaker#controls)
-* [Gallery](https://github.com/jgspires/block-breaker#gallery)
-* [Authors](https://github.com/jgspires/block-breaker#authors)
-* [License](https://github.com/jgspires/block-breaker#license)
+* [Description](https://github.com/jgspires/rainbow-breaker#Description)
+* [Repo Structure](https://github.com/jgspires/rainbow-breaker#repo-structure)
+  * [src](https://github.com/jgspires/rainbow-breaker#src)
+  * [imgs](https://github.com/jgspires/rainbow-breaker#imgs)
+  * [Screenshots](https://github.com/jgspires/rainbow-breaker#screenshots)
+* [How to Run it?](https://github.com/jgspires/rainbow-breaker#how-to-run-it)
+* [Controls](https://github.com/jgspires/rainbow-breaker#controls)
+* [Gallery](https://github.com/jgspires/rainbow-breaker#gallery)
+* [Authors](https://github.com/jgspires/rainbow-breaker#authors)
+* [License](https://github.com/jgspires/rainbow-breaker#license)
 
 # Description
 
@@ -25,21 +25,21 @@ In order to play the game again after you win or lose, reloading the page is adv
 
 # Repo Structure
 
-## [**src**](https://github.com/jgspires/block-breaker/tree/main/src):
+## [**src**](https://github.com/jgspires/rainbow-breaker/tree/main/src):
 
 Contains the source code of the game.
 
 This game was developed using HTML5, TypeScript, CSS and Node.js. Clean Architecture and SOLID principles were used throughout the project as a means of better organizing and more efficiently implementing and updating the code base.
 
-## [**imgs**](https://github.com/jgspires/block-breaker/tree/main/imgs):
+## [**imgs**](https://github.com/jgspires/rainbow-breaker/tree/main/imgs):
 
 Contains all of the images used as assets within the game, such as the ball, the paddle and the blocks.
 
-## [**Screenshots**](https://github.com/jgspires/block-breaker/tree/main/Screenshots):
+## [**Screenshots**](https://github.com/jgspires/rainbow-breaker/tree/main/Screenshots):
 
 Contains many screenshots of the game in action.
 
-All screenshots are also available near the end of this readme, at the [Gallery](https://github.com/jgspires/block-breaker#gallery) section.
+All screenshots are also available near the end of this readme, at the [Gallery](https://github.com/jgspires/rainbow-breaker#gallery) section.
 
 # How to Run it?
 
