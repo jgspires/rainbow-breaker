@@ -1,15 +1,15 @@
-# Block Breaker
+# Rainbow Breaker
 
 This is a simple block breaking game similar to the likes of the retro game Arkanoid, where the player controls a horizontal paddle in order to bounce a ball off it multiple times and use it break the blocks on the higher portion of the screen.
 
 # Table of Contents
+* [Description](https://github.com/jgspires/block-breaker#Description)
 * [Repo Structure](https://github.com/jgspires/block-breaker#repo-structure)
   * [src](https://github.com/jgspires/block-breaker#src)
   * [imgs](https://github.com/jgspires/block-breaker#imgs)
   * [Screenshots](https://github.com/jgspires/block-breaker#screenshots)
-* [How does it work?](https://github.com/jgspires/block-breaker#how-does-it-work)
-  * [For Costumers](https://github.com/jgspires/block-breaker#costumers)
-  * [For Staff](https://github.com/jgspires/block-breaker#staff)
+* [How to Run it?](https://github.com/jgspires/block-breaker#how-to-run-it)
+* [Controls](https://github.com/jgspires/block-breaker#controls)
 * [Gallery](https://github.com/jgspires/block-breaker#gallery)
 * [Authors](https://github.com/jgspires/block-breaker#authors)
 * [License](https://github.com/jgspires/block-breaker#license)
@@ -41,7 +41,7 @@ Contains many screenshots of the game in action.
 
 All screenshots are also available near the end of this readme, at the [Gallery](https://github.com/jgspires/block-breaker#gallery) section.
 
-# How to run it?
+# How to Run it?
 
 1) Download and install [Node.js](https://nodejs.org/en/download/) on your machine if you don't already have it.
 2) Clone this repository.
