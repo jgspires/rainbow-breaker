@@ -2,6 +2,8 @@
 
 This is a simple block breaking game similar to the likes of the retro game Arkanoid, where the player controls a horizontal paddle in order to bounce a ball off it multiple times and use it break the blocks on the higher portion of the screen.
 
+![alt text](Screenshots/GameStart.png?raw=true "Game Start")
+
 # Table of Contents
 * [Description](https://github.com/jgspires/rainbow-breaker#Description)
 * [Repo Structure](https://github.com/jgspires/rainbow-breaker#repo-structure)
