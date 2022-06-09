@@ -22,7 +22,7 @@ There are 4 block types, each block type has a colour and each type takes a diff
 
 The ball and paddle have semi-realistic acceleration and deceleration, allowing for the ball to move more slowly or more rapidly depending on how the paddle is moving when the ball hits it. In addition, the paddle's movement also affects the ball's direction slightly, making it so skillful player control is rewarded with precision.
 
-This game should be considered a work in progress. There is only one level and there are no "Game Over" or "You Win!" screens.
+This game should be considered a prototype. There is only one level and there are no "Game Over" or "You Win!" screens.
 In order to play the game again after you win or lose, reloading the page is advised.
 
 # Repo Structure
